@@ -496,6 +496,7 @@
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             const dateString = now.toLocaleDateString('ar-EG', options);
             document.getElementById('currentDate').textContent = dateString;
+            return dateString;
         }
 
         function toggleCategory(button) {
@@ -544,6 +545,7 @@
         function previewList() {
             let selectedItems = [];
             const categories = document.querySelectorAll('.category');
+            const dateString = displayCurrentDate();
             
             categories.forEach(category => {
                 const categoryName = category.querySelector('.category-title span').textContent;
@@ -563,13 +565,14 @@
             if (selectedItems.length === 0) {
                 alert("لم تقم بتحديد أي عناصر للمعاينة");
             } else {
-                alert("العناصر المحددة:\n" + selectedItems.join('\n'));
+                alert(`قائمة المشتريات - ${dateString}\n${selectedItems.join('\n')}`);
             }
         }
         
         function sendList() {
             let selectedItems = [];
             const categories = document.querySelectorAll('.category');
+            const dateString = displayCurrentDate();
             
             categories.forEach(category => {
                 const categoryName = category.querySelector('.category-title span').textContent;
@@ -592,7 +595,7 @@
             }
             
             const phoneNumber = "+96892654893";
-            const message = "قائمة المشتريات:\n" + selectedItems.join('\n');
+            const message = `قائمة المشتريات - ${dateString}\n${selectedItems.join('\n')}`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             
