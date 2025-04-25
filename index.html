@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة مشتريات المنزل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f9fc;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .date {
+            color: #7f8c8d;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .shopping-list {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .category {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        .category:last-child {
+            border-bottom: none;
+        }
+        .category-title {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+        .item:hover {
+            background-color: #f0f7fd;
+        }
+        .item-checkbox {
+            margin-left: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .item-name {
+            flex-grow: 1;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .add-item-form {
+            display: flex;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        .add-item-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .add-item-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .add-item-btn:hover {
+            background-color: #2ecc71;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .preview-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        .send-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+        .action-btn i {
+            margin-left: 8px;
+        }
+        .toggle-category {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>قائمة مشتريات المنزل</h1>
+        <div class="date" id="currentDate"></div>
+    </div>
+    
+    <div class="shopping-list">
+        <!-- قسم المواد الأساسية -->
+        <div class="category">
+            <div class="category-title">
+                <span>المواد الأساسية</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item1" class="item-checkbox">
+                    <label for="item1" class="item-name">أرز</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item2" class="item-checkbox">
+                    <label for="item2" class="item-name">طحين</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item3" class="item-checkbox">
+                    <label for="item3" class="item-name">سكر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item4" class="item-checkbox">
+                    <label for="item4" class="item-name">ملح</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item5" class="item-checkbox">
+                    <label for="item5" class="item-name">صلصة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item6" class="item-checkbox">
+                    <label for="item6" class="item-name">زيت</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item7" class="item-checkbox">
+                    <label for="item7" class="item-name">داغوص</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item8" class="item-checkbox">
+                    <label for="item8" class="item-name">كاتشاب</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item9" class="item-checkbox">
+                    <label for="item9" class="item-name">صوص برتقالي</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item10" class="item-checkbox">
+                    <label for="item10" class="item-name">صوص أبيض</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item11" class="item-checkbox">
+                    <label for="item11" class="item-name">ثوم مطحون (shan)</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item12" class="item-checkbox">
+                    <label for="item12" class="item-name">حليب مبخر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item13" class="item-checkbox">
+                    <label for="item13" class="item-name">حليب بودر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item14" class="item-checkbox">
+                    <label for="item14" class="item-name">حليب طويل الأجل</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item15" class="item-checkbox">
+                    <label for="item15" class="item-name">قشطة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item16" class="item-checkbox">
+                    <label for="item16" class="item-name">حليب مركز</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item17" class="item-checkbox">
+                    <label for="item17" class="item-name">معكرونة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item18" class="item-checkbox">
+                    <label for="item18" class="item-name">سيويا</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item19" class="item-checkbox">
+                    <label for="item19" class="item-name">اندومي</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <!-- قسم الأجبان والألبان -->
+        <div class="category">
+            <div class="category-title">
+                <span>الأجبان والألبان</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item20" class="item-checkbox">
+                    <label for="item20" class="item-name">جبن غراش</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item21" class="item-checkbox">
+                    <label for="item21" class="item-name">جبن مثلثات</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item22" class="item-checkbox">
+                    <label for="item22" class="item-name">جبنة موزريلا</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item23" class="item-checkbox">
+                    <label for="item23" class="item-name">روب</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item24" class="item-checkbox">
+                    <label for="item24" class="item-name">لبن</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item25" class="item-checkbox">
+                    <label for="item25" class="item-name">زبدة قوالب</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item26" class="item-checkbox">
+                    <label for="item26" class="item-name">زبدة بخاخ</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item27" class="item-checkbox">
+                    <label for="item27" class="item-name">كريمة طبخ</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item28" class="item-checkbox">
+                    <label for="item28" class="item-name">كريمة خفق</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item29" class="item-checkbox">
+                    <label for="item29" class="item-name">بيض</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <!-- قسم العناية الصحية -->
+        <div class="category">
+            <div class="category-title">
+                <span>العناية الصحية</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item30" class="item-checkbox">
+                    <label for="item30" class="item-name">كلينيكس حمام</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item31" class="item-checkbox">
+                    <label for="item31" class="item-name">كلينيكس مطبخ</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item32" class="item-checkbox">
+                    <label for="item32" class="item-name">كلينيكس الغرف</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item33" class="item-checkbox">
+                    <label for="item33" class="item-name">سفرة طعام</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item34" class="item-checkbox">
+                    <label for="item34" class="item-name">أكياس زبالة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item35" class="item-checkbox">
+                    <label for="item35" class="item-name">كريم الشعر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item36" class="item-checkbox">
+                    <label for="item36" class="item-name">شامبو</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item37" class="item-checkbox">
+                    <label for="item37" class="item-name">سائل غسيل الجسم</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item38" class="item-checkbox">
+                    <label for="item38" class="item-name">ملطف اباط</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item39" class="item-checkbox">
+                    <label for="item39" class="item-name">أمواس حلاقة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item40" class="item-checkbox">
+                    <label for="item40" class="item-name">معجون أسنان</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <!-- قسم المجمدات -->
+        <div class="category">
+            <div class="category-title">
+                <span>المجمدات</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item41" class="item-checkbox">
+                    <label for="item41" class="item-name">نقانق</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item42" class="item-checkbox">
+                    <label for="item42" class="item-name">برجر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item43" class="item-checkbox">
+                    <label for="item43" class="item-name">نجتز</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item44" class="item-checkbox">
+                    <label for="item44" class="item-name">شيبس</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item45" class="item-checkbox">
+                    <label for="item45" class="item-name">بف باستري</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item46" class="item-checkbox">
+                    <label for="item46" class="item-name">خبز سمبوسة</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <!-- قسم الخضروات والفواكه -->
+        <div class="category">
+            <div class="category-title">
+                <span>الخضروات والفواكه</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item47" class="item-checkbox">
+                    <label for="item47" class="item-name">جزر</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item48" class="item-checkbox">
+                    <label for="item48" class="item-name">خيار</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item49" class="item-checkbox">
+                    <label for="item49" class="item-name">طماط</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item50" class="item-checkbox">
+                    <label for="item50" class="item-name">بصل</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item51" class="item-checkbox">
+                    <label for="item51" class="item-name">باذنجان</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item52" class="item-checkbox">
+                    <label for="item52" class="item-name">فلفل رومي</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item53" class="item-checkbox">
+                    <label for="item53" class="item-name">فلفل حار</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <!-- قسم الأطفال -->
+        <div class="category">
+            <div class="category-title">
+                <span>الأطفال</span>
+                <button class="toggle-category" onclick="toggleCategory(this)">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="items-container">
+                <div class="item">
+                    <input type="checkbox" id="item54" class="item-checkbox">
+                    <label for="item54" class="item-name">حفاظات</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item55" class="item-checkbox">
+                    <label for="item55" class="item-name">مرطب</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item56" class="item-checkbox">
+                    <label for="item56" class="item-name">حليب الأطفال</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item57" class="item-checkbox">
+                    <label for="item57" class="item-name">كيك مدرسة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item58" class="item-checkbox">
+                    <label for="item58" class="item-name">عصير مدرسة</label>
+                </div>
+                <div class="item">
+                    <input type="checkbox" id="item59" class="item-checkbox">
+                    <label for="item59" class="item-name">كورنفلكس</label>
+                </div>
+            </div>
+            <div class="add-item-form">
+                <input type="text" class="add-item-input" placeholder="إضافة عنصر جديد">
+                <button class="add-item-btn" onclick="addItem(this)">إضافة</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn preview-btn" onclick="previewList()">
+                <i class="fas fa-eye"></i> معاينة القائمة
+            </button>
+            <button class="action-btn send-btn" onclick="sendList()">
+                <i class="fab fa-whatsapp"></i> إرسال عبر واتساب
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // دالة لعرض التاريخ الحالي
+        function displayCurrentDate() {
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('ar-EG', options);
+            document.getElementById('currentDate').textContent = dateString;
+        }
+
+        function toggleCategory(button) {
+            const category = button.closest('.category');
+            const itemsContainer = category.querySelector('.items-container');
+            const addForm = category.querySelector('.add-item-form');
+            const icon = button.querySelector('i');
+            
+            if (itemsContainer.style.display === 'none') {
+                itemsContainer.style.display = 'grid';
+                addForm.style.display = 'flex';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                itemsContainer.style.display = 'none';
+                addForm.style.display = 'none';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }
+
+        function addItem(button) {
+            const category = button.closest('.category');
+            const input = category.querySelector('.add-item-input');
+            const itemName = input.value.trim();
+            
+            if (itemName === '') {
+                alert('الرجاء إدخال اسم العنصر');
+                return;
+            }
+            
+            const itemsContainer = category.querySelector('.items-container');
+            const newId = 'item' + (document.querySelectorAll('.item').length + 1);
+            
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+            newItem.innerHTML = `
+                <input type="checkbox" id="${newId}" class="item-checkbox">
+                <label for="${newId}" class="item-name">${itemName}</label>
+            `;
+            
+            itemsContainer.appendChild(newItem);
+            input.value = '';
+        }
+
+        function previewList() {
+            let selectedItems = [];
+            const categories = document.querySelectorAll('.category');
+            
+            categories.forEach(category => {
+                const categoryName = category.querySelector('.category-title span').textContent;
+                const items = category.querySelectorAll('.item-checkbox:checked');
+                
+                if (items.length > 0) {
+                    const categoryItems = [];
+                    items.forEach(item => {
+                        const itemName = item.nextElementSibling.textContent;
+                        categoryItems.push(`- ${itemName}`);
+                    });
+                    
+                    selectedItems.push(`\n${categoryName}:\n${categoryItems.join('\n')}`);
+                }
+            });
+            
+            if (selectedItems.length === 0) {
+                alert("لم تقم بتحديد أي عناصر للمعاينة");
+            } else {
+                alert("العناصر المحددة:\n" + selectedItems.join('\n'));
+            }
+        }
+        
+        function sendList() {
+            let selectedItems = [];
+            const categories = document.querySelectorAll('.category');
+            
+            categories.forEach(category => {
+                const categoryName = category.querySelector('.category-title span').textContent;
+                const items = category.querySelectorAll('.item-checkbox:checked');
+                
+                if (items.length > 0) {
+                    const categoryItems = [];
+                    items.forEach(item => {
+                        const itemName = item.nextElementSibling.textContent;
+                        categoryItems.push(`- ${itemName}`);
+                    });
+                    
+                    selectedItems.push(`\n${categoryName}:\n${categoryItems.join('\n')}`);
+                }
+            });
+            
+            if (selectedItems.length === 0) {
+                alert("لم تقم بتحديد أي عناصر للإرسال");
+                return;
+            }
+            
+            const phoneNumber = "+96892654893";
+            const message = "قائمة المشتريات:\n" + selectedItems.join('\n');
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // استدعاء الدالة عند تحميل الصفحة
+        window.onload = function() {
+            displayCurrentDate();
+        };
+    </script>
+</body>
+</html>
